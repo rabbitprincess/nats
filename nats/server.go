@@ -1,6 +1,7 @@
 package nats
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -22,10 +23,10 @@ func NewServer(host string, port int) *EmbeddedServer {
 }
 
 func (s *EmbeddedServer) Address() string {
-	return fmt.Sprintf("%s:%d", s.Host, s.Port)
+	return fmt.Sprintf("nats://%s:%d", s.Host, s.Port)
 }
 
-func (s *EmbeddedServer) Start() error {
+func (s *EmbeddedServer) Start(ctx context.Context) error {
 	var err error
 	s.Server, err = server.NewServer(&server.Options{
 		Host: s.Host,
@@ -40,5 +41,11 @@ func (s *EmbeddedServer) Start() error {
 	}
 
 	log.Info().Msgf("NATS server started at %s", s.Address())
+	go func() {
+		<-ctx.Done()
+		log.Info().Msg("Shutting down NATS server...")
+		s.Server.Shutdown()
+	}()
+
 	return nil
 }
