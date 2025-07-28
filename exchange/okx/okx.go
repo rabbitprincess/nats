@@ -18,8 +18,8 @@ type Okx struct {
 }
 
 func NewOkx() (*Okx, error) {
-	okx := new(okx.Exchange)
-	cfg, err := exchange.GetDefaultConfig(context.Background(), okx)
+	ex := new(okx.Exchange)
+	cfg, err := exchange.GetDefaultConfig(context.Background(), ex)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +27,16 @@ func NewOkx() (*Okx, error) {
 	// configure custom settings if needed
 	// cfg.Enabled = true
 
-	if err := okx.Setup(cfg); err != nil {
+	if err := ex.Setup(cfg); err != nil {
 		return nil, err
 	}
-	if err := okx.Websocket.Enable(); err != nil {
+	if err := ex.Websocket.Enable(); err != nil {
 		return nil, err
 	}
 
 	return &Okx{
 		cfg: cfg,
-		ex:  okx,
+		ex:  ex,
 	}, nil
 }
 

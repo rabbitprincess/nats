@@ -18,8 +18,8 @@ type Kraken struct {
 }
 
 func NewKraken() (*Kraken, error) {
-	kraken := new(kraken.Exchange)
-	cfg, err := exchange.GetDefaultConfig(context.Background(), kraken)
+	ex := new(kraken.Exchange)
+	cfg, err := exchange.GetDefaultConfig(context.Background(), ex)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +27,16 @@ func NewKraken() (*Kraken, error) {
 	// configure custom settings if needed
 	// cfg.Enabled = true
 
-	if err := kraken.Setup(cfg); err != nil {
+	if err := ex.Setup(cfg); err != nil {
 		return nil, err
 	}
-	if err := kraken.Websocket.Enable(); err != nil {
+	if err := ex.Websocket.Enable(); err != nil {
 		return nil, err
 	}
 
 	return &Kraken{
 		cfg: cfg,
-		ex:  kraken,
+		ex:  ex,
 	}, nil
 }
 

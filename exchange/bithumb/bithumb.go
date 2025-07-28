@@ -18,8 +18,8 @@ type Bithumb struct {
 }
 
 func NewBithumb() (*Bithumb, error) {
-	bithumb := new(bithumb.Exchange)
-	cfg, err := exchange.GetDefaultConfig(context.Background(), bithumb)
+	ex := new(bithumb.Exchange)
+	cfg, err := exchange.GetDefaultConfig(context.Background(), ex)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +27,16 @@ func NewBithumb() (*Bithumb, error) {
 	// configure custom settings if needed
 	// cfg.Enabled = true
 
-	if err := bithumb.Setup(cfg); err != nil {
+	if err := ex.Setup(cfg); err != nil {
 		return nil, err
 	}
-	if err := bithumb.Websocket.Enable(); err != nil {
+	if err := ex.Websocket.Enable(); err != nil {
 		return nil, err
 	}
 
 	return &Bithumb{
 		cfg: cfg,
-		ex:  bithumb,
+		ex:  ex,
 	}, nil
 }
 

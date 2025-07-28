@@ -18,8 +18,8 @@ type Binanace struct {
 }
 
 func NewBinance() (*Binanace, error) {
-	bi := new(binance.Exchange)
-	cfg, err := exchange.GetDefaultConfig(context.Background(), bi)
+	ex := new(binance.Exchange)
+	cfg, err := exchange.GetDefaultConfig(context.Background(), ex)
 	if err != nil {
 		return nil, err
 	}
@@ -27,16 +27,16 @@ func NewBinance() (*Binanace, error) {
 	// configure custom settings if needed
 	// cfg.Enabled = true
 
-	if err := bi.Setup(cfg); err != nil {
+	if err := ex.Setup(cfg); err != nil {
 		return nil, err
 	}
-	if err := bi.Websocket.Enable(); err != nil {
+	if err := ex.Websocket.Enable(); err != nil {
 		return nil, err
 	}
 
 	return &Binanace{
 		cfg: cfg,
-		ex:  bi,
+		ex:  ex,
 	}, nil
 }
 

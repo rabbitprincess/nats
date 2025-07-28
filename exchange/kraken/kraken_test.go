@@ -16,7 +16,7 @@ import (
 )
 
 func TestSubscription(t *testing.T) {
-	h, err := NewKraken()
+	ex, err := NewKraken()
 	require.NoError(t, err, "Failed to create instance")
 
 	sub := &subscription.Subscription{
@@ -31,7 +31,7 @@ func TestSubscription(t *testing.T) {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	err = h.SubscribeFunc(ctx, func(data any) {
+	err = ex.SubscribeFunc(ctx, func(data any) {
 		switch v := data.(type) {
 		case websocket.KlineData:
 			fmt.Println(v.Pair, v.Interval, v.OpenPrice, v.ClosePrice)
