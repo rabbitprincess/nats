@@ -29,7 +29,7 @@ var (
 func main() {
 	fs := cmd.PersistentFlags()
 	fs.StringVarP(&host, "host", "H", "localhost", "NATS server host")
-	fs.IntVarP(&port, "port", "P", 8000, "NATS server port")
+	fs.IntVarP(&port, "port", "P", 4222, "NATS server port")
 	fs.StringVarP(&subject, "subject", "s", "default", "NATS subject")
 
 	if err := cmd.Execute(); err != nil {
@@ -54,7 +54,7 @@ func runServer() {
 	}
 
 	cli := nats.NewClient(host, port)
-	if err := cli.Connect(); err != nil {
+	if err := cli.Connect(nats_go.InProcessServer(serv.Server)); err != nil {
 		log.Fatal().Err(err).Msg("Failed to connect to NATS")
 	}
 

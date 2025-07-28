@@ -23,9 +23,9 @@ func (c *Client) Address() string {
 	return fmt.Sprintf("nats://%s:%d", c.Host, c.Port)
 }
 
-func (c *Client) Connect() error {
+func (c *Client) Connect(options ...nats_go.Option) error {
 	var err error
-	c.Conn, err = nats_go.Connect(c.Address())
+	c.Conn, err = nats_go.Connect(c.Address(), options...)
 	if err != nil {
 		return err
 	}
